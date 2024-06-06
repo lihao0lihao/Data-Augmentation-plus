@@ -109,14 +109,16 @@ class RandomErasing(object):
 
 def parse_args():
     parser=argparse.ArgumentParser(description="parser args for random earse")
-    parser.add_argument('--dir', type=str, help='origin picture dir')
+    parser.add_argument('--input_dir', type=str, help='origin picture dir')
+    parser.add_argument('--output_dir', type=str, help='output dir')
     parser.add_argument('--mode', type=str,choices=["origin", "patch"], default="origin", help='erase mode')
     args= parser.parse_args()
     return args
 if __name__=='__main__':
     args=parse_args()
     mode=args.mode
-    dir=args.dir
+    dir=args.input_dir
+    output_dir=args.output_dir
     pic_dir=os.path.join('./origin_pic',dir)
     files=os.listdir(pic_dir)
     for file in files:
@@ -137,7 +139,7 @@ if __name__=='__main__':
         img = img.mul(255).byte()
         img = img.numpy().transpose((1, 2, 0))
         root_dir=os.path.dirname(os.path.realpath(__file__))
-        out_dir=os.path.join(root_dir,'output',dir)
+        out_dir=os.path.join(root_dir,'output',output_dir)
         if not os.path.exists(out_dir):
             os.mkdir(out_dir)
         cv2.imwrite(os.path.join(out_dir,name), img)
